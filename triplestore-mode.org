@@ -1,0 +1,111 @@
+
+* Vorgehen
+
+** Erster Schritt
+<2023-07-25 Di.>
+
+- einen Buffer, in dem ich einen Text ab dem ersten Zeichen eingeben kann, und nach dem wird gesucht, und completition angezeigt, und bei Auswahl einer Vervollständigung wird die passende URL in den Buffer eingefügt, hinterlegt mit dem skos:prefLabel, das auf mouse-hover angezeigt wird.
+- Dabei ist die „connection“ einfach eine URL ein Graph und ein Triplestore-Typ, daraus muß dann die Bibliothek den richtigen SPARQL-Protocolaufruf erzeugen.
+- Erst mal nur für blazegraph, also ohne weitere Triplestores. 
+* Mehrere Datenbankconnections
+
+z.B. um im gleichen emacs auf dev und production gehen zu können.
+
+Siehe cider session/connection manager https://docs.cider.mx/cider/usage/managing_connections.html
+Danach die erste session anlegen um nachher keine Probleme zu bekommen, wenn ich auch nicht gleich mehrere Sessions programmieren werde…
+* Triplestore-mode als minor mode?
+* Doch auch eine Datei hinterlegen
+
+Um sozusagen den Zustand der Session zu speichern…
+
+Das ist aber übel kompliziert, denn dann muß ich beim neuladen quasi diffs zu der Db machen, was noch so existiert, was noch neu hinzugekommen ist.
+Aber ich könnte dafür ediff nehmen, also quasi Bordmittel.
+Trotzdem erst mal nur als Idee lassen.
+
+* Logging
+
+Ich übersetzte ja Tastencodes und Turtle-Inhalte in INSERT-, DELETE- und/oder INSERT/DELETE-Anweisungen.
+Diese sollte ich pro Projekt, oder pro Datei unbedingt loggen! Ausschaltbar mittels var.
+Das hilft mir beim ersten Erstellen, wenn ich nachvollziehen kann, was meine UI tatsächlich gemacht hat, und den Nutzern, wenn sie sich einarbeiten, und evtl. auch gut im Projekt, wenn mehrere Nutzer nachvollziehen wollen, was in der Db passiert ist.
+
+Dazu sowohl in einen Buffer loggen, a la ~*Messages*~, als auch in eine Datei. Die Datei dabei nie löschen, immer anhängen, den Buffer aber entweder in der Größe begrenzen, oder nur bei jedem Emacs-Neustart leer starten.
+
+* IDE
+
+Das ganze sollte gleich als IDE für RDF/OWL/SHACL/SPARQL funktionieren!!!
+
+Also alle Dateitypen editieren können. Und alle in den TripleStore speichern können (soweit der das versteht)
+
+Und natürlich auch Graph Management.
+
+Und ein Verzeichnis als ein Projekt, und aus diesem Projekt die Entwicklung der Db nachvollziehen können.
+Wobei das nur teilweise geht, weil z.B. externe Quellen die Db mit Informationen beschicken, oder überhaupt das Projekt mit einer Riesen-Db startet, wie Wikidata.
+
+* Abfragen und Ergebnisse in Turtle in einer Datei unterstützen
+
+Also z,B. in einer Turtle-Datei Abfragen im Kommentar zu lassen, die laden dann die Live-Daten als Turtle in den Buffer, sobald dieser aufgemacht wird, oder die Abfrage neu ausgeführt wird.
+
+Das ganze im Triplestore-Mode, also die geladenen Daten bleiben live, wenn ich sie verändere kann ich das in den Store schreiben (Achtung! DELETE/INSERT, wo merkt sich das der Buffer??) Muß der Nutzer das als diff eingeben? also mit - für gelöschte, und + für neue Daten?
+
+* UX
+
+Eines meiner Probleme ist der Kontextverlust. Sowohl in vielen GUIs, aber auch in Turtle verlierfe ich den Kontext, wenn auf ein Objekt gezeigt wird.
+Dann muß ich dieses Objekt suchen und betrachten, und verliere dabei das Objekt, von dem ich hierher gekommen bin.
+
+Darum möchte ich das lieber als Baum darstrellen, mit den untergeordneten Objekten direkt im übergeardneten, nach Art eines Outliners.
+
+** Turtle kann Bäume nur mit blank nodes darstellen!
+
+*** Vielleicht die Schachtelung mit indirect buffer darstellen?
+
+#+begin_src ttl
+        :_MathiasPicker gist:hasStreetAddress :_Westendstr142München ;
+        # indirect buffer:   :_Westendstr142München
+        #                               gist:content "Westendstraße 142, 80339 München, Germany" ] .
+      :name "Mathias Picker" .
+#+end_src
+
+und den indirect buffer irgendwie hervorheben. wird evtl. unübersichtlich bei vielen indirect buffers…
+
+Aber so bleibt es einfaches turtle…
+
+*** Ich könnte auch eine zusätliche Syntax entwerfen
+
+Aber das ist natürlich viel Arbeit und verläßt den Standard.
+
+**** Ich könnte eine Erweiterung der geschachtelten blank nodes vornehmen
+
+#+begin_src ttl
+:_MathiasPicker gist:hasStreetAddress [ :_Westendstr142München gist:content "Westendstraße 142, 80339 München, Germany" ] .
+#+end_src
+
+und dabei sagen zwei atoms vor dem ersten Komma, Semikolon oder Punkt = blank node, ansonsten benannte Node.
+
+**** Oder in Anlehnung an ’<<>>’ von RDF-Star einfache spitze Klammern nehmen
+
+Damit wird dann einfach eine IRI bezeichnet, deren angehängten Prädikate und Werte gleich mit angegeben werden, beliebig tief.
+#+begin_src ttl
+:_MathiasPicker gist:hasStreetAddress < :_Westendstr142München gist:content "Westendstraße 142, 80339 München, Germany" > .
+#+end_src
+
+** font-lock: verschiedene Farben für Vokabulare/Präfixe
+
+- jene, die unter meiner Kontrolle stehen
+- jene, die extern gemanaged bzw. importiert werden
+- jene, die gar nicht definiert sind, weder per RDFS, OWL noch per SHACL
+
+Denn Farben für jede Ontologie wären zu viele, man hat leicht 14 oder mehr in einem Store
+
+** Pop-Ups mit Informationen über jede IRI
+
+- label. Konfigurierbar zwischen verschiedenen Prädikaten. Evtl. auch mehrere mit Sortierung, also per Union, etwa ~skos:prefLabel~ als erstes und ~rdfs:label~ danach, dann wird ein ~rdfs:label~ angezeigt, wenn es kein ~skos:prefLabel~ gibt.
+- evtl. noch die Ontologie, wo sie herstammen? Aber die weiß man ja schon vom Präfix, oder?
+- evtl. eine Description? Kann ich längere Popups anzeigen?
+
+** Listen von Ergebnissen
+
+Eine Abfrage, die die Liste von Entities erzeugt (wie paging angeben)
+
+Dort immer alle Attribute anzeigen (oder in der Abfrage angeben?
+
+Wenn in einem Ergebnis etwas aufgeklappt wird, wird das in allen gemacht und auch beim paging beibehalten!

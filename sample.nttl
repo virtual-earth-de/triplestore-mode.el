@@ -1,0 +1,93 @@
+@prefix gist: <https://ontologies.semanticarts.com/gist/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/
+@prefix : <http://virtual-earth.de/test/> .
+
+pi:price-hw-I241-8776317-EUR-gist
+    rdf:type gist:Monetary;
+    rdfs:label "0,50 EUR";
+    gist:numericValue "0.5"^^xsd:double;
+    gist:hasUnitOfMeasure gist:_EUR;
+    gist:hasPrecision [
+        a gist:Magnitude;
+        gist:numericValue "2"^^xsd:double;
+        gist:hasUnitOfMeasure gist:_EUR].
+
+####################################################
+# Ein wirklicher Graph. Wie kann die Beziehung hier sichbar gemacht werden?
+:prod1
+    :compatProd :prod2 ;
+    :compatProd :prod3 ;
+    :price "1.01" .
+:prod2
+    :compatProd :prod1 ;
+    :compatProd :prod3 ;
+    :price "0.94" .
+:prod3
+    :compatProd :prod1 ;
+    :compatProd :prod2 ;
+    :price "3.24" .
+
+###################################################
+# Geschachtelte Triple, woher kann die UΙ wissen, dass nicht alle :compatProd
+# rekursiv aufgeklappt werden?
+# 
+# Nicht aufklappen, wenn es schon irgendwo aufgeklappt ist? Wie sieht das von
+# der Performance aus?
+# 
+# mit {} für named nodes modifizierter blank node syntax 
+
+:_prod1
+    :price "1.01" ;
+    :compatProd :_prod2 {
+        :compatProd :_prod1 ;
+        :compatProd :_prod3 ;
+        :price "0.94" } ;
+    :compatProd :_prod3 {
+        :compatProd :_prod1 ;
+        :compatProd :_prod2 ;
+        :price "3.24"} .
+
+:_prod2
+    :price "0.94" ;
+    :compatProd :_prod1 {
+        :compatProd :_prod1 ;
+        :compatProd :_prod3 ;
+        :price "1.01" } ;
+    :compatProd :_prod3 {
+        :compatProd :_prod1 ;
+        :compatProd :_prod2 ;
+        :price "3.24"} .
+
+:_prod3
+    :price "3.24" ;
+    :compatProd :_prod2 {
+        :compatProd :_prod1 ;
+        :compatProd :_prod3 ;
+        :price "0.94" } ;
+    :compatProd :_prod1 {
+        :compatProd :_prod2 ;
+        :compatProd :_prod3 ;
+        :price "1.01"} .
+
+
+
+# :hasResident owl:inverseOf :isResidentInWhile
+:_MathiasPicker
+    :isResidentInWhile :_574cf669-d855-4500-b812-35fd53685c9a {
+        a :EstablishedLocation ;
+        gist:startTime :_2005 ;
+        gist:content "Westendstr. 142\n80339 München\nGermany" } ;
+    :name "Mathias Picker" .
+
+# oder mit Syntax für reverse property aus dem SPARQL property paths geklaut
+:_MathiasPicker
+    ^:hasResident :_574cf669-d855-4500-b812-35fd53685c9a {
+        a :EstablishedLocation ;
+        gist:startTime :_2005 ;
+        gist:content "Westendstr. 142\n80339 München\nGermany" } ;
+    :name "Mathias Picker" .
