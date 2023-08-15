@@ -49,3 +49,6 @@ flycheck_*.el
 /network-security.data
 
 
+# Added automatically by ‘eldev init’.
+/.eldev
+/Eldev-local
