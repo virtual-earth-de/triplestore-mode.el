@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;; This package handles connections to triplestores for hopefully any RDF-related major mode
+;; This package handles connections to triplestores for hopefully many RDF-related major modes
 
 ;;;; Installation
 
@@ -53,16 +53,20 @@
 
 ;;;; Tips
 
-;; + You can customize settings in the `package-name' group.
+;; + You can customize settings in the `triplestore-mode' group.
 
 ;;;; Credits
 
 ;; This package would not have been possible without the following
 ;; packages: ttl-mode[1], which showed me how to syntax highlight turtle, and restclient.el[2],
-;; which taught me about working with http and displaying return values in a buffer.
+;; which taught me about working with http and displaying return values in a
+;; buffer and cider[3], which showed me how to handle multiple connections using
+;; sesman[4] and influenced my understanding of an interactive development environment.
 ;;
 ;;  [1] https://github.com/nxg/ttl-mode
 ;;  [2] https://github.com/pashky/restclient.el
+;;  [3] https://cider.mx/
+;;  [4] https://github.com/vspinu/sesman/
 
 ;;; Code:
 
@@ -73,19 +77,18 @@
 
 ;;;; Customization
 
-(project-current)
 (defgroup triplestore-mode nil
-  "Settings for `package-name'."
-  :link '(url-link "https://virtual-earth.de/elisp/triplestore-mode.el"))
+  "Settings for `triplestore-mode'."
+  :link '(url-link "https://github.com/virtual-earth-de/triplestore-mode.el"))
 
-(defcustom ve:triplestore:something nil
+(defcustom triplestore-mode-something nil
   "This setting does something."
   :type 'something)
 
 ;;;; Variables
 
-;;; temporyry solution: current "connection"
-(defvar ve:triplestore:connection '((type . blazegraph) (url . "http://localhost:9999/"))
+;;; temporary solution: current "connection"
+(defvar triplestore-mode-connection '((type . blazegraph) (url . "http://localhost:9999/"))
   "A variable.")
 
 ;; blazegraph uses HOST/blazegraph/namespace/[NAMESPACE]/sparql for queries,
