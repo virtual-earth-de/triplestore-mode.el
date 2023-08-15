@@ -116,11 +116,79 @@
 
 ;;;; Commands
 
+;;; we need to find some things at point
+;;; <2023-08-15 Di.> later, for now it's enough to manipulate the syntax table (see below)
+
+(defun QName--bound-of-QName-at-point ()
+  "Return the start and end points of a QName at the current point.
+A QName is an abbreviated URL, see the RDF specifications. 
+The result is a paired list of max and min character positions of 
+the QName in the current buffer."
+  (0 1))
+
+(put 'QName'bounds-of-thing-at-point #'QName-bound-of-QName-at-point) 
+
+;;; end of thing-at-points extension
+
+;;; experiment with fake eldoc function
+
+;; Oh fudge, I have to expand the defined prefixes...
+;; or maybe put the prefixed symbols in the help table, too
+
+;; for this test, Ι just use the prefixed symbols...
+
+;; could a hash map or trie be better? How many symbols do I need to have
+;; documentation for? With wikidata and more this could easily be several
+;; thousand... Do I really want to hold them inside emacs, or do I need to hold
+;; them in some tool and if nessecary regenerate them? 
+(setq triplestore-mode--eldoc-obarray (make-vector 41 0))
+
+(set (intern "gist:hasParty" triplestore-mode--eldoc-obarray)
+     "subPropertyOf: gist:hasParticipant\n
+prefLabel: \"has party\"\n
+range: unionOf (gist:Organisation gist:Person)\n
+Definition: The people or organizations participating in an event, agreement or obligation\n
+Example: For loan agreements, one might create hasLender and hasBorrower as subproperties of hasParty.")
+
+;; it would be nice to also show the class of an entity, e.g. the gist:Party mentioned here,
+;; but that would mean reason over the whole file...
+(set (intern "hasCommunicationAddress" triplestore-mode--eldoc-obarray)
+     "subPropertyOf: gist:hasAddress
+prefLabel: \"has communication address\"
+domain: unionOf (gist:Organisation gist:Person)
+range: gist:Address
+Definition: Relates a Person or Organization to where they can receive messages, 
+  including postal addresses, fax numbers, phone numbers, email, web site, etc.")
+
+(set (intern "gist:hasAddress" triplestore-mode--eldoc-obarray)
+     "prefLabel: \"has address\"
+range: gist:Address
+Definition: Relates the subject to its physical or virtual address.
+Example: The street address of a building; the email address of a person.")
+
+(defun triplestore-mode--eldoc-function (callback &rest _ignored)
+  "Returns documentation for predicates and classes from RDFS, OWL or SHACL definitions."
+  (when-let ((docstring  (symbol-value
+                          (intern-soft (thing-at-point 'symbol)
+                                       triplestore-mode--eldoc-obarray))))
+    
+    (funcall callback
+             (format "%s" docstring)
+             :thing 'what
+             :face 'font-lock-doc-face)
+    nil))
+
+
+
+;;; end eldoc
+
 ;;;###autoload
-(defun triplestore-mode ()
-  "Activate triplestore mode in current buffer."
-  (interactive)
-  (triplestore-mode-activate))
+(define-minor-mode triplestore-mode
+  "Working with RDF and Triplestore: Documentation (and in the future: completition, connections, query and updates)."
+  :interactive '(ttl-mode sparql-mode omn-mode owl-functional-mode)
+  (if triplestore-mode
+      (add-hook 'eldoc-documentation-functions #'triplestore-mode--eldoc-function nil t)
+    (remove-hook 'eldoc-documentation-functions #'triplestore-mode--eldoc-function t)))
 
 ;;;; Functions
 
