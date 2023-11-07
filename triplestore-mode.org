@@ -14,6 +14,12 @@ z.B. um im gleichen emacs auf dev und production gehen zu können.
 Siehe cider session/connection manager https://docs.cider.mx/cider/usage/managing_connections.html
 Danach die erste session anlegen um nachher keine Probleme zu bekommen, wenn ich auch nicht gleich mehrere Sessions programmieren werde…
 * Triplestore-mode als minor mode?
+** rdf-mode und triplestore-mode oder nur einer?
+
+Im Grunde kann man die Triplestore-Verbindung als einfache Erweiterung des
+Projektes verstehen, die Daten sind halt in einem Triplestore statt nur in
+Dateien. Einfach eine weitere Inhalts-Quelle.
+
 * Doch auch eine Datei hinterlegen
 
 Um sozusagen den Zustand der Session zu speichern…
@@ -73,20 +79,8 @@ Aber so bleibt es einfaches turtle…
 
 Aber das ist natürlich viel Arbeit und verläßt den Standard.
 
-**** Ich könnte eine Erweiterung der geschachtelten blank nodes vornehmen
+Nö: einfach geschweifte Klammern statt eckiger Klammern für named nodes.
 
-#+begin_src ttl
-:_MathiasPicker gist:hasStreetAddress [ :_Westendstr142München gist:content "Westendstraße 142, 80339 München, Germany" ] .
-#+end_src
-
-und dabei sagen zwei atoms vor dem ersten Komma, Semikolon oder Punkt = blank node, ansonsten benannte Node.
-
-**** Oder in Anlehnung an ’<<>>’ von RDF-Star einfache spitze Klammern nehmen
-
-Damit wird dann einfach eine IRI bezeichnet, deren angehängten Prädikate und Werte gleich mit angegeben werden, beliebig tief.
-#+begin_src ttl
-:_MathiasPicker gist:hasStreetAddress < :_Westendstr142München gist:content "Westendstraße 142, 80339 München, Germany" > .
-#+end_src
 
 ** font-lock: verschiedene Farben für Vokabulare/Präfixe
 
@@ -109,3 +103,7 @@ Eine Abfrage, die die Liste von Entities erzeugt (wie paging angeben)
 Dort immer alle Attribute anzeigen (oder in der Abfrage angeben?
 
 Wenn in einem Ergebnis etwas aufgeklappt wird, wird das in allen gemacht und auch beim paging beibehalten!
+
+** Auch Tools zum Erzeugen von RDF unterstützen!!!
+
+[[https://github.com/kg-construct/awesome-kgc-tools][Awesome KGC Tools]]  R2RML, RML und RML-star, Excel, im Grunde Alles-zu-RDF tools und Virtualizers. Ziemlich geil.
