@@ -1,0 +1,4 @@
+PREFIX gist: <http://semanticarts.com/gist/>
+
+select ?agent where {
+  ?agent gist:hasAddress :someAddress }
