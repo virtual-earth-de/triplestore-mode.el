@@ -166,8 +166,16 @@ range: gist:Address
 Definition: Relates the subject to its physical or virtual address.
 Example: The street address of a building; the email address of a person.")
 
+(set (intern "gist:hasUnitOfMeasure" triplestore-mode--eldoc-obarray)
+     "prefLabel: \"has unit of measure\"
+domain: gist:Magnitude
+range: gist:UnitOfMeasure
+Definition: Which unit of measure you are using. All measures are expressed in some unit of measure, even if we don't know what it is initially.")
+
 (defun triplestore-mode--eldoc-function (callback &rest _ignored)
   "Returns documentation for predicates and classes from RDFS, OWL or SHACL definitions."
+  ;; need to get the IRI here, i.e. if it's an IRI, take that, if not, make the
+  ;; IRI from prefix and rest
   (when-let ((docstring  (symbol-value
                           (intern-soft (thing-at-point 'symbol)
                                        triplestore-mode--eldoc-obarray))))
