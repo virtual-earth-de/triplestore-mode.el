@@ -1,4 +1,20 @@
+* Anforderungen
 
+** Eine fremde KG verstehen
+
+- Präfixe sammeln
+- Im Netz nach bekannten Präfixen suchen
+- Ontologien zu den Präfixen laden
+- „Form“ des Graphen ermitteln:
+  - Welche Prädikate für welche Klassen
+  - Welche Prädikate für Instanzen ohne Klassen
+    - hier wenn möglich Klassen bilden anhand Ähnlichkeiten in der Struktur
+  - Klassen, generierte Klassen und Instanzen ohne (generierte) Klassen gruppieren und Menge der Instanzen zählen
+  - Welche Prädikate gibt es (mit Anzahl der Instanzen pro Prädikat)
+- Ontologie(n) visualisieren
+  - Sub/Superklassen und -prädikate, Disjointness, funktional, transitiv etc…
+  - Gerne anzeigen a la CG:  [URIdesSpezifischstenTyp: InstanzURI „Label“]
+- Rohdaten visualisieren, angfangen bei einigen zentralen Entitäten
 * Vorgehen
 
 ** Erster Schritt
