@@ -127,3 +127,10 @@ Wenn in einem Ergebnis etwas aufgeklappt wird, wird das in allen gemacht und auc
 ** Auch Tools zum Erzeugen von RDF unterstützen!!!
 
 [[https://github.com/kg-construct/awesome-kgc-tools][Awesome KGC Tools]]  R2RML, RML und RML-star, Excel, im Grunde Alles-zu-RDF tools und Virtualizers. Ziemlich geil.
+
+* Tools und Bibliotheken
+
+** [[https://github.com/ahyatt/emacs-websocket][Emacs Websocket]]  :opensource:
+ 
+Geil: ein Websocket-Server für Emacs. Wird z.B. von der org-roam Weboberfläche genutzt.
+Damit kann ich eine Visualisierung von KnowledgeGraphs mit Emacs realisieren!
