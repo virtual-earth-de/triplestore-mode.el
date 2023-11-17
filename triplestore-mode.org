@@ -76,6 +76,10 @@ Dann muß ich dieses Objekt suchen und betrachten, und verliere dabei das Objekt
 
 Darum möchte ich das lieber als Baum darstrellen, mit den untergeordneten Objekten direkt im übergeardneten, nach Art eines Outliners.
 
+** Nach einer Node die möglichen Properties als completition anbieten!
+
+Dabei die für die Klasse möglichen und alle ohne Erwähnung in einer Ontologie anbieten?
+Oder konfigurierbar machen, entweder nur die definierten, oder alle in dem KG und/oder den Ontologien.
 ** Turtle kann Bäume nur mit blank nodes darstellen!
 
 *** Vielleicht die Schachtelung mit indirect buffer darstellen?
