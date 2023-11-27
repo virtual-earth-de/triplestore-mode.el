@@ -15,6 +15,24 @@
   - Sub/Superklassen und -prädikate, Disjointness, funktional, transitiv etc…
   - Gerne anzeigen a la CG:  [URIdesSpezifischstenTyp: InstanzURI „Label“]
 - Rohdaten visualisieren, angfangen bei einigen zentralen Entitäten
+  
+** Eine Ontologie ohne SourceCode verstehen/erstellen
+
+Durch metaphacts ein wenig drauf gekommen:
+
+Kann ich in emacs so etwas wie einen Outliner machen, indem unter jede
+Überschrift ein Formular kommt?
+
+Und dort dann Label, Description (multi-language?) etc eingeben können?
+
+Dann zwei Spalten: Links Klassen, rechts Relationen, evtl. oben die Ontologie
+(Metadaten editiertbar machen)? Das wäre geil!
+
+Man könnte erst einmal nur die beiden Listen bzw. Bäume erstellen, und nach und
+nach mit Details füllen.
+
+Wie geht das mit Klassen oder Eigenschaften, die mehrere Superklassen haben???
+Verd... NeXTStep Browser??
 * Vorgehen
 
 ** Erster Schritt
