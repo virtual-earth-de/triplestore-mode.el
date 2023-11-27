@@ -31,6 +31,11 @@ Dann zwei Spalten: Links Klassen, rechts Relationen, evtl. oben die Ontologie
 Man könnte erst einmal nur die beiden Listen bzw. Bäume erstellen, und nach und
 nach mit Details füllen.
 
+Daraus dann OWL und SHACL erzeugen. Dann muß der Nutzer das nicht selber
+entscheiden, was was ist.
+
+Leicht den SourceCode sehen können!
+
 Wie geht das mit Klassen oder Eigenschaften, die mehrere Superklassen haben???
 Verd... NeXTStep Browser??
 * Vorgehen
@@ -152,3 +157,91 @@ Wenn in einem Ergebnis etwas aufgeklappt wird, wird das in allen gemacht und auc
  
 Geil: ein Websocket-Server für Emacs. Wird z.B. von der org-roam Weboberfläche genutzt.
 Damit kann ich eine Visualisierung von KnowledgeGraphs mit Emacs realisieren!
+
+
+** [[https://github.com/clojure-emacs/parseedn][EDN parser for Emacs Lisp]]
+
+parseedn is an Emacs Lisp library for parsing EDN data. It uses parseclj's
+shift-reduce parser internally.
+
+EDN and Emacs Lisp have some important differences that make translation from
+one to the other not transparent (think representing an EDN map into Elisp, or
+being able to differentiate between false and nil in Elisp). Because of this,
+parseedn takes certain decisions when parsing and transforming EDN data into
+Elisp data types. For more information please refer to parseclj DESIGN.md
+document.
+* Tests und Experimente
+
+** Offene Daten
+
+*** [[https://lov.linkeddata.es/dataset/lov/vocabs][Linked Open Vocabularies]]
+
+Eine Website mit sehr vielen frei verfügbaren (open) Ontologien.
+Sehr gut! Eine geile Methode, meine RDF UI auszuprobieren!
+
+* Beispielabfragen
+
+** Über Linked Open Vocabularies (LOV))
+
+ https://lov.linkeddata.es/dataset/lov/ 
+
+Lokal in namespace lov von blazegraph.
+
+Eine Abfrage um alle Ontologien mit „energy“ im Titel zu finden:
+#+begin_src sparql
+  prefix dcterm: <http://purl.org/dc/terms/>
+
+  select ?prefix ?title ?url ?comment where 
+
+  {?voc <http://purl.org/vocab/vann/preferredNamespacePrefix> ?prefix;
+        <http://purl.org/vocab/vann/preferredNamespaceUri> ?url;
+        dcterm:title ?title;
+        rdfs:comment ?comment .
+    ?title bds:search "energy" .}
+
+  group by ?prefix ?title ?url ?comment
+  order by ?prefix ?title
+#+end_src
+
+* Andere Implementationen
+
+Um Ideen zu sammeln
+
+** sparql-to-graphviz
+
+https://github.com/jindrichmynarz/sparql-to-graphviz
+
+#+begin_quote
+This tools helps you to explore an unfamiliar dataset in a SPARQL endpoint,
+optionally restricted to a named graph. It produces a class diagram in the DOT
+language, which can be turned into images by Graphviz. The class diagram shows
+an empirical schema of the explored dataset. The schema reflects the structure
+of instance data in terms of its vocabularies.
+#+end_quote
+** LODSight
+
+https://github.com/marek-dudas/LODSight/blob/master/docs/index.md
+
+Schlecht dokumentiert.
+
+#+begin_quote
+LODSight is an RDF dataset summarisation tool.
+
+It consists of a Java project that runs a set of SPARQL queries against a given
+endpoint. Based on query results, a summarisation is stored in an SQL database.
+
+There are two frontend web apps that can visualize the summarization."
+#+end_quote
+** sparql-explore
+
+Ziemlich nett, mit link auf ein [[https://clerk.vision/][Clerk]-Notebook.
+Aber darin sehe ich, dass es noch bei weitem nicht so gut ist, wie ich das
+möchte! 
+
+#+begin_quote
+Exploration of the UNIPROT SPARQL interface by way
+of copying/translating the SPARQL examples
+into flint,  a really nice clojure SPARQL DSL. I
+also borrowed a number of functions from Mundaneum, Jack Rusher's
+excellent SPARQL DSL for wikidata.
+#+end_quote
