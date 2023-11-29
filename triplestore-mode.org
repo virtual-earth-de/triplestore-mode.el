@@ -151,6 +151,22 @@ Wenn in einem Ergebnis etwas aufgeklappt wird, wird das in allen gemacht und auc
 
 [[https://github.com/kg-construct/awesome-kgc-tools][Awesome KGC Tools]]  R2RML, RML und RML-star, Excel, im Grunde Alles-zu-RDF tools und Virtualizers. Ziemlich geil.
 
+** Sichten auf die Ontologie implementieren
+
+metaphacts macht das ja mit seinen grafischen Sichten: jede Ontologie kann mehrere Sichten haben.
+Ist das auch nützlich für textuelle Sichten, e.g. um einzelne Aspekte betrachten zu können?
+Und kann es hier besser sein, ganz neue virtuelle Dateien bzw. einfach einen
+Buffer aufzumachen, in dem nur Teile der zugrundeliegenden Ontologie gezeigt
+werden?
+
+Wie könnte ich das realisieren? Denn die Sicht sollte sich ja ändern, wenn ich
+die zugrundeliegende Ontologie ändere, und andersrum.
+
+Dann muß die Sicht eine Art Abfrage sein... Interessanter Gedanke!
+
+So eine "Sicht" könnte auch in einem org-dokument sein, oder mit Kommentaren
+angereichert sein, und einen speziellen UseCase beleuchten (e.g. so modelliert gist
+Adressen, und nur die dafür nötigen Teile von gist zeigen...
 * Tools und Bibliotheken
 
 ** [[https://github.com/ahyatt/emacs-websocket][Emacs Websocket]]  :opensource:
